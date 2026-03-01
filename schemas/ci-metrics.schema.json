@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Self-Healing CI Metrics Schema",
+  "description": "Schema for CI/CD metrics collected by the self-healing pipeline",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "timestamp",
+      "workflow_run_id",
+      "branch",
+      "test_passed",
+      "test_duration_seconds"
+    ],
+    "properties": {
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO 8601 timestamp of metric collection"
+      },
+      "workflow_run_id": {
+        "type": "string",
+        "description": "GitHub workflow run ID"
+      },
+      "branch": {
+        "type": "string",
+        "description": "Git branch reference (e.g., refs/heads/main)"
+      },
+      "test_passed": {
+        "type": "boolean",
+        "description": "Whether the test suite passed"
+      },
+      "test_duration_seconds": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Total duration of test execution in seconds"
+      },
+      "build_failure_rate": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "description": "Percentage of failed builds in the period (0-100)"
+      },
+      "mttr_minutes": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Mean Time To Recovery in minutes"
+      },
+      "auto_fixed_incidents_percent": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "description": "Percentage of incidents auto-fixed by the pipeline"
+      },
+      "flaky_tests_count": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Number of flaky tests detected in this run"
+      },
+      "failed_tests": {
+        "type": "array",
+        "description": "List of failed test names",
+        "items": {
+          "type": "string"
+        }
+      },
+      "root_causes": {
+        "type": "array",
+        "description": "Detected root causes for failures",
+        "items": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "enum": [
+                "timeout",
+                "network",
+                "import_error",
+                "assertion",
+                "panic",
+                "resource",
+                "config",
+                "unknown"
+              ],
+              "description": "Category of root cause"
+            },
+            "description": {
+              "type": "string",
+              "description": "Human-readable description"
+            },
+            "confidence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Confidence score (0-100)"
+            }
+          }
+        }
+      },
+      "suggested_fixes": {
+        "type": "array",
+        "description": "Remediation suggestions",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "priority": {
+              "type": "string",
+              "enum": ["critical", "high", "medium", "low"]
+            }
+          }
+        }
+      },
+      "affected_components": {
+        "type": "array",
+        "description": "Components impacted by failure",
+        "items": {
+          "type": "string"
+        }
+      },
+      "environment": {
+        "type": "object",
+        "description": "Environment information",
+        "properties": {
+          "go_version": {
+            "type": "string"
+          },
+          "os": {
+            "type": "string"
+          },
+          "runner": {
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "type": "object",
+        "description": "Additional custom annotations",
+        "additionalProperties": true
+      }
+    }
+  },
+  "examples": [
+    {
+      "timestamp": "2026-03-01T10:30:00.000Z",
+      "workflow_run_id": "123456789",
+      "branch": "refs/heads/main",
+      "test_passed": true,
+      "test_duration_seconds": 145,
+      "build_failure_rate": 5.2,
+      "mttr_minutes": 2.3,
+      "auto_fixed_incidents_percent": 60.0,
+      "flaky_tests_count": 2,
+      "failed_tests": [],
+      "root_causes": [],
+      "suggested_fixes": [],
+      "affected_components": [],
+      "environment": {
+        "go_version": "1.25.0",
+        "os": "ubuntu-latest",
+        "runner": "ubuntu-22.04"
+      }
+    },
+    {
+      "timestamp": "2026-03-01T11:00:00.000Z",
+      "workflow_run_id": "123456790",
+      "branch": "refs/heads/main",
+      "test_passed": false,
+      "test_duration_seconds": 210,
+      "build_failure_rate": 15.5,
+      "mttr_minutes": 8.5,
+      "auto_fixed_incidents_percent": 40.0,
+      "flaky_tests_count": 3,
+      "failed_tests": [
+        "TestIntegration/TestDatabaseConnection",
+        "TestCLI/TestTimeout"
+      ],
+      "root_causes": [
+        {
+          "category": "timeout",
+          "description": "Test timeout or deadline exceeded",
+          "confidence": 85
+        },
+        {
+          "category": "network",
+          "description": "Network connectivity issue",
+          "confidence": 75
+        }
+      ],
+      "suggested_fixes": [
+        {
+          "title": "Increase test timeout",
+          "description": "Tests are timing out. Increase timeout duration.",
+          "priority": "high"
+        }
+      ],
+      "affected_components": [
+        "database",
+        "cli"
+      ],
+      "environment": {
+        "go_version": "1.25.0",
+        "os": "ubuntu-latest",
+        "runner": "ubuntu-22.04"
+      }
+    }
+  ]
+}
