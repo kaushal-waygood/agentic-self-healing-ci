@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": "2026-03-01T22:44:25.783801",
+    "workflow_run_id": "22554544573",
+    "branch": "refs/heads/main",
+    "test_passed": true,
+    "test_duration_seconds": 75,
+    "build_failure_rate": 0,
+    "mttr_minutes": 0,
+    "auto_fixed_incidents_percent": 0,
+    "flaky_tests_count": 0
+  }
+]
