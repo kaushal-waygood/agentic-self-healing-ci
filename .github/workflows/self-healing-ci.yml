@@ -1,4 +1,4 @@
-name: 🤖 Self-Healing CI Pipeline
+name:  Self-Healing CI Pipeline
 
 on:
   push:
