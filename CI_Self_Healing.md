@@ -39,9 +39,9 @@ Introducing: Self-Healing CI Pipeline
 
 All with zero manual intervention.
 
----
 
-## SLIDE 4: Before & After
+
+ Before & After
 
 ### The Impact (30 Days)
 
@@ -53,10 +53,7 @@ All with zero manual intervention.
 | Developer Time/Week | 10 hrs | 2 hrs | **-80%** ✅ |
 | Team Velocity | Baseline | +15% | **+15%** ✅ |
 
-
----
-
-## SLIDE 5: How It Works - Architecture
+ How It Works - Architecture
 
 ### The Pipeline in Action
 
@@ -110,11 +107,9 @@ Test fails
 → Identifies missing connection pooling
 → Team fixes, problem solved
 
----
+Feature 2 - MTTR Dashboard
 
-## SLIDE 7: Feature 2 - MTTR Dashboard
-
-### 📊 MTTR Dashboard
+###  MTTR Dashboard
 
 **What You'll See:**
 
@@ -144,16 +139,14 @@ Build History
 - Trend analysis showing improvements
 - Data-driven optimization decisions
 
----
+ Feature 3 - AI Incident Summary
 
-## SLIDE 8: Feature 3 - AI Incident Summary
-
-### 🤖 AI Incident Summary
+AI Incident Summary
 
 **Example: What Developers See (In PR Comments)**
 
 ```
-## 🤖 AI-Powered Failure Analysis
+AI-Powered Failure Analysis
 
 Severity: HIGH | Impact: 75/100 | Confidence: 87%
 
