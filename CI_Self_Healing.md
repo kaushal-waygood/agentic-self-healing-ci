@@ -7,16 +7,16 @@
 
 ### Why CI/CD Fails Teams
 
-**Current State:**
-- 😤 Developers waste **2-3 hours/week** debugging CI failures
-- 🔴 35-40% of failures are false positives (flaky tests)
-- 📉 **No visibility** into test reliability trends
-- ⏱️ **20-30 minutes** average time to recover from failures
-- 😞 Eroded trust in CI system
+Current State:
+-  Developers waste **2-3 hours/week** debugging CI failures
+- 5-40% of failures are false positives (flaky tests)
+- No visibility into test reliability trends
+- 20-30 minutes average time to recover from failures
+-  Eroded trust in CI system
 
  The Solution
 
-### Introducing: Self-Healing CI Pipeline
+Introducing: Self-Healing CI Pipeline
 
 **Three Powerful Features:**
 
@@ -57,10 +57,6 @@ All with zero manual intervention.
 | Developer Time/Week | 10 hrs | 2 hrs | **-80%** ✅ |
 | Team Velocity | Baseline | +15% | **+15%** ✅ |
 
-**Annual Savings (50-person team): $400,000+**
-
-**Speaker Notes:**
-These aren't theoretical numbers—they're what we see consistently. Week 1. Immediate impact. The first thing teams notice is the reduction in CI noise. Then they realize how much time they're getting back.
 
 ---
 
@@ -85,19 +81,14 @@ Dashboard Update
 ```
 
 **Key Points:**
-- ⚡ Fully automated
-- 🤖 No manual intervention
-- 📊 Real-time feedback
-- 💾 Historical tracking
+- Fully automated
+- No manual intervention
+- Real-time feedback
+- Historical tracking
 
-**Speaker Notes:**
-The beauty of this system is that it works silently in the background. You don't have to do anything. It just gets smarter the more it runs.
+Feature 1 - Flaky Test Auto-Healing
 
----
-
-## SLIDE 6: Feature 1 - Flaky Test Auto-Healing
-
-### 🔄 Flaky Test Auto-Healing
+Flaky Test Auto-Healing
 
 **The Problem:**
 - Tests that fail intermittently (5-50% of the time)
@@ -133,15 +124,15 @@ Test fails
 
 ```
 Real-Time Metrics
-├─ Build Success Rate: 92% ✅
-├─ MTTR: 8.5 minutes ✅
-├─ Auto-Fixed Incidents: 68% ✅
-└─ Flaky Tests: 2 ⚠️
+├─ Build Success Rate: 92% 
+├─ MTTR: 8.5 minutes 
+├─ Auto-Fixed Incidents: 68% 
+└─ Flaky Tests: 2 
 
 Build History
-├─ Run #5821 ✅ PASS (145s)
-├─ Run #5820 ❌ FAIL (210s) → AUTO-FIXED
-├─ Run #5819 ✅ PASS (138s)
+├─ Run #5821 PASS (145s)
+├─ Run #5820  FAIL (210s) → AUTO-FIXED
+├─ Run #5819  PASS (138s)
 └─ ...15 more runs
 ```
 
@@ -193,6 +184,19 @@ Severity: HIGH | Impact: 75/100 | Confidence: 87%
 
 **Developer Impact:**
 "Instead of 'Test failed', they get 'Test failed because X, try Y'"
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
