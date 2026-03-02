@@ -16,17 +16,17 @@ Introducing: Self-Healing CI Pipeline
 
 **Three Powerful Features:**
 
-1. **🔄 Flaky Test Auto-Healing**
+1. Flaky Test Auto-Healing**
    - Automatically detects intermittent failures
    - Reruns tests to identify real bugs
    - Eliminates false positives
 
-2. **📊 MTTR Dashboard**
+2. MTTR Dashboard**
    - Real-time metrics on build health
    - Tracks Mean Time To Recovery
    - Shows improvement trends
 
-3. **🤖 AI Incident Summary**
+3.AI Incident Summary**
    - Analyzes failures with pattern matching
    - Suggests specific fixes
    - Posts to PR comments automatically
