@@ -1,22 +1,11 @@
-# 🤖 Self-Healing CI Pipeline
-## Client Presentation & Pitch Deck
+ Self-Healing CI Pipeline
 
----
-
-## SLIDE 1: Title Slide
-
-### 🤖 Self-Healing CI Pipeline
-**Enterprise-Grade Automated Testing & Incident Management**
 
 - ✅ Production Ready
 - 🚀 v1.0.0
 - 📊 Real-Time Metrics
 - 🤖 AI-Powered
 
-**Speaker Notes:**
-Welcome everyone. Today we're going to introduce you to a solution that will transform how your team handles CI/CD failures. This isn't just another tool—it's a complete system that makes your CI/CD pipeline actually work for you.
-
----
 
 ## SLIDE 2: The Problem
 
@@ -24,21 +13,10 @@ Welcome everyone. Today we're going to introduce you to a solution that will tra
 
 **Current State:**
 - 😤 Developers waste **2-3 hours/week** debugging CI failures
-- 🔴 **35-40%** of failures are false positives (flaky tests)
+- 🔴 35-40% of failures are false positives (flaky tests)
 - 📉 **No visibility** into test reliability trends
 - ⏱️ **20-30 minutes** average time to recover from failures
 - 😞 Eroded trust in CI system
-
-**Cost Impact:**
-```
-50 developers × 2.5 hours/week × $150/hour × 50 weeks/year
-= $937,500 annual cost
-```
-
-**Speaker Notes:**
-Think about your own team. How much time do developers spend on Slack asking "is CI down for you too?" or "did your tests pass?" This isn't productive work—it's friction. And it's costing you money.
-
----
 
 ## SLIDE 3: The Solution
 
@@ -61,8 +39,7 @@ Think about your own team. How much time do developers spend on Slack asking "is
    - Suggests specific fixes
    - Posts to PR comments automatically
 
-**Speaker Notes:**
-These aren't separate tools—they work together as one integrated system. When a test fails, the pipeline automatically:
+ When a test fails, the pipeline automatically:
 1. Retries to see if it's flaky
 2. Analyzes the failure
 3. Posts findings to your PR
