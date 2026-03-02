@@ -215,6 +215,7 @@ jobs:
           echo "| Failed ❌ | $FAILED |" >> $GITHUB_STEP_SUMMARY
           if [ $FAILED -gt 0 ]; then
             echo "| Flaky 🔴 | $FLAKY |" >> $GITHUB_STEP_SUMMARY
+          fi
 
   # ============================================================
   # Part 1b: Astro YAML Front Matter Validation
@@ -236,5 +237,3 @@ jobs:
               echo "$FRONTMATTER" | yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" || exit 1
             fi
           done
-
-# The rest of your workflow (AI Failure Analysis, MTTR metrics) remains unchanged
