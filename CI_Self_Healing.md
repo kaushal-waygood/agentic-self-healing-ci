@@ -14,7 +14,7 @@
 - ⏱️ **20-30 minutes** average time to recover from failures
 - 😞 Eroded trust in CI system
 
-## SLIDE 3: The Solution
+ The Solution
 
 ### Introducing: Self-Healing CI Pipeline
 
