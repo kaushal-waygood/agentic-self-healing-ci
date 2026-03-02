@@ -1,8 +1,8 @@
-name:  Self-Healing CI Pipeline
+name: Self-Healing CI Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: main
   pull_request:
     paths:
       - '**.go'
@@ -10,6 +10,7 @@ on:
       - 'actions/**'
       - '.github/workflows/self-healing-ci.yml'
       - '.github/workflows/**/*.md'
+      - 'docs/src/components/**/*.astro'
   workflow_dispatch:
     inputs:
       force_healing:
@@ -216,7 +217,27 @@ jobs:
           echo "| Failed ❌ | $FAILED |" >> $GITHUB_STEP_SUMMARY
           if [ $FAILED -gt 0 ]; then
             echo "| Flaky 🔴 | $(cat /tmp/flaky_tests.txt 2>/dev/null | grep -c ^ || echo "0") |" >> $GITHUB_STEP_SUMMARY
-          fi
+
+  # ============================================================
+  # Part 1b: Astro YAML Front Matter Validation
+  # ============================================================
+  validate-astro-frontmatter:
+    name: ⚡ Validate Astro YAML Front Matter
+    runs-on: ubuntu-latest
+    needs: test-with-flaky-detection
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v5
+
+      - name: 🔍 Lint Astro YAML Front Matter
+        run: |
+          pip install yamllint
+          find docs/src/components -name '*.astro' | while read f; do
+            FRONTMATTER=$(awk '/^---/{flag=!flag;next} flag' "$f")
+            if [ -n "$FRONTMATTER" ]; then
+              echo "$FRONTMATTER" | yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" || exit 1
+            fi
+          done
 
   # ============================================================
   # Part 2: AI-Powered Log Analysis & Root Cause Detection
@@ -224,7 +245,9 @@ jobs:
   analyze-failures:
     name: 🤖 AI Failure Analysis
     runs-on: ubuntu-latest
-    needs: test-with-flaky-detection
+    needs:
+      - test-with-flaky-detection
+      - validate-astro-frontmatter
     if: failure() || needs.test-with-flaky-detection.outputs.test_failed == 'true'
     permissions:
       contents: read
@@ -349,37 +372,4 @@ jobs:
           history.append(metrics)
           os.makedirs('.github/metrics',exist_ok=True)
           with open(metrics_file,'w') as f: json.dump(history,f,indent=2)
-          recent=[m for m in history if (datetime.now()-datetime.fromisoformat(m['timestamp'])).days<7]
-          if recent:
-              failed=sum(1 for m in recent if not m['test_passed'])
-              failure_rate=(failed/len(recent)*100) if recent else 0
-              auto_fixed=sum(1 for m in recent if m['flaky_tests_count']>0 and m['test_passed'])
-              auto_fixed_percent=(auto_fixed/len(recent)*100) if recent else 0
-              avg_mttr=sum(m['test_duration_seconds'] for m in recent)/len(recent)/60 if recent else 0
-              metrics['build_failure_rate']=round(failure_rate,2)
-              metrics['mttr_minutes']=round(avg_mttr,2)
-              metrics['auto_fixed_incidents_percent']=round(auto_fixed_percent,2)
-          with open('/tmp/current_metrics.json','w') as f: json.dump(metrics,f)
           EOF
-
-      - name: 📊 Generate MTTR Dashboard
-        run: |
-          python3 - << 'EOF'
-          import json, os
-          metrics_file='.github/metrics/ci-metrics.json'
-          if not os.path.exists(metrics_file): exit(0)
-          with open(metrics_file,'r') as f: history=json.load(f)
-          dashboard_html="""<!DOCTYPE html><html><head><title>Self-Healing CI Dashboard</title><style>
-          body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;margin:20px;background:#f5f5f5}
-          .container{max-width:1200px;margin:0 auto}.header{text-align:center;margin-bottom:40px}.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:40px}
-          .metric-card{background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-          .metric-value{font-size:32px;font-weight:bold;color:#0969da}.metric-label{font-size:14px;color:#666;margin-top:8px}
-          .status-good{color:#28a745}.status-warning{color:#ffc107}.status-bad{color:#dc3545}
-          .chart{background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);margin-bottom:20px}
-          table{width:100%;border-collapse:collapse}th,td{padding:12px;text-align:left;border-bottom:1px solid #ddd}th{background:#f5f5f5;font-weight:600}tr:hover{background:#f9f9f9}
-          </style></head><body><div class="container"><div class="header"><h1>🤖 Self-Healing CI Pipeline Dashboard</h1><p>Real-time metrics for build reliability and incident recovery</p></div><div class="metric-grid">"""
-          if history:
-              recent_7d=[m for m in history[-30:] if m.get('test_passed')]
-              failed_count=sum(1 for m in history[-30:] if not m.get('test_passed'))
-              failure_rate=(failed_count/len(history[-30:])*100) if history else 0
-              auto_fixed=sum(1 for m in history[-30:] if m.get('flaky_tests_count',0)>
